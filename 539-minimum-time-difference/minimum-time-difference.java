@@ -1,6 +1,6 @@
 class Solution {
     public int findMinDifference(List<String> timePoints) {
-         boolean[] mark = new boolean[24 * 60];
+        boolean[] mark = new boolean[24 * 60];
         for (String time : timePoints) {
             String[] t = time.split(":");
             int h = Integer.parseInt(t[0]);
