@@ -1,35 +1,34 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
+
     public ListNode modifiedList(int[] nums, ListNode head) {
-        int max = -1;
-        for(int num : nums ){
-            max = num > max ? num : max;
+        // Create a HashSet for efficient lookup of values in nums
+        Set<Integer> valuesToRemove = new HashSet<>();
+        for (int num : nums) {
+            valuesToRemove.add(num);
         }
-        boolean[] freq = new boolean[max+1];
 
-        for(int num : nums) freq[num] = true;
-
-        ListNode temp = new ListNode();
-        ListNode current = temp;
-
-        while(head != null){
-            if( head.val >= freq.length || freq[head.val] == false){
-                current.next = head;
-                current = current.next;
-            }
+        // Handle the case where the head node needs to be removed
+        while (head != null && valuesToRemove.contains(head.val)) {
             head = head.next;
         }
 
-        current.next = null;
-        return temp.next;
+        // If the list is empty after removing head nodes, return null
+        if (head == null) {
+            return null;
+        }
+
+        // Iterate through the list, removing nodes with values in the set
+        ListNode current = head;
+        while (current.next != null) {
+            if (valuesToRemove.contains(current.next.val)) {
+                // Skip the next node by updating the pointer
+                current.next = current.next.next;
+            } else {
+                // Move to the next node
+                current = current.next;
+            }
+        }
+
+        return head;
     }
 }
