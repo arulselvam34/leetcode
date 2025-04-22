@@ -5,21 +5,21 @@ class Solution {
             return result;
         }
 
-        List<Integer> firstRow = new ArrayList<>();
-        firstRow.add(1);
-        result.add(firstRow);
+        List<Integer> first = new ArrayList<>();
+        first.add(1);
+        result.add(first);
 
         for(int i=1;i<numRows;i++){
-            List<Integer> prevRow = result.get(i - 1);
-            List<Integer> currentRow = new ArrayList<>();
-            currentRow.add(1);
+            List<Integer> prev = result.get(i - 1);
+            List<Integer> current = new ArrayList<>();
+            current.add(1);
 
             for (int j = 1; j < i; j++) {
-                currentRow.add(prevRow.get(j - 1) + prevRow.get(j));
+                current.add(prev.get(j - 1) + prev.get(j));
             }
 
-            currentRow.add(1);
-            result.add(currentRow);
+            current.add(1);
+            result.add(current);
         }
         return result;
     }
