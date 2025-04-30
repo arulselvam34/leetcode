@@ -1,22 +1,37 @@
 class Solution {
-    public long countFairPairs(int[] nums, int lower, int upper) {
-    Arrays.sort(nums);
-    return getPairsLessThan(nums, upper+1)-getPairsLessThan(nums, lower);    
-    }
-    public long getPairsLessThan(int nums[], int val)
-    {
-      int left = 0, right = nums.length-1;
-      long res = 0;
-      while(left<=right)
-      {
-        if((nums[left]+nums[right])<val)
-        {
-            res += right-left;
-            left++;
+
+    long lower_bound(int[] nums, int low, int high, int element) {
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+            if (nums[mid] >= element) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
         }
-        else
-             right--;
-      }  
-      return res;
+        return low;
+    }
+
+    long countFairPairs(int[] nums, int lower, int upper) {
+        Arrays.sort(nums);
+        long ans = 0;
+        for (int i = 0; i < nums.length; i++) {
+           
+            long low = lower_bound(
+                nums,
+                i + 1,
+                nums.length - 1,
+                lower - nums[i]
+            );
+
+            long high = lower_bound(
+                nums,
+                i + 1,
+                nums.length - 1,
+                upper - nums[i] + 1
+            );
+            ans += 1 * (high - low);
+        }
+        return ans;
     }
 }
