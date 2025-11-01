@@ -1,24 +1,27 @@
 class Solution {
 
     public ListNode modifiedList(int[] nums, ListNode head) {
-        Set<Integer> valuesToRemove = new HashSet<>();
-        for (int num : nums) {
-            valuesToRemove.add(num);
+        int max = -1;
+        for(int num : nums ){
+            max = num > max ? num : max;
         }
-        while (head != null && valuesToRemove.contains(head.val)) {
-            head = head.next;
-        }
-        if (head == null) {
-            return null;
-        }
-        ListNode current = head;
-        while (current.next != null) {
-            if (valuesToRemove.contains(current.next.val)) {
-                current.next = current.next.next;
-            } else {
+        boolean[] freq = new boolean[max+1];
+
+        for(int num : nums) freq[num] = true;
+
+        ListNode temp = new ListNode();
+        ListNode current = temp;
+
+        while(head != null){
+            if( head.val >= freq.length || freq[head.val] == false){
+                current.next = head;
                 current = current.next;
             }
+            head = head.next;
         }
-        return head;
+
+        current.next = null;
+        return temp.next;
+
     }
 }
