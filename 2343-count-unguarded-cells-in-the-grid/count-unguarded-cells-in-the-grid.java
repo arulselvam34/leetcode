@@ -1,34 +1,31 @@
-class Solution
+class Solution 
 {
-    public int countUnguarded(int m, int n, int[][] guards, int[][] walls)
-    {
-        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-        char[][] grid= new char[m][n];
-        int count = m*n - guards.length - walls.length;
-        for(int[] wall : walls)
-        {
-            int x = wall[0], y = wall[1];
-            grid[x][y] = 'W';
-        }
-        for(int[] guard : guards)
-        {
-            int x = guard[0], y = guard[1];
-            grid[x][y] = 'G';
-        }
-        for(int[] point : guards)
-        {
-            for(int dir[] : dirs)
-            {
-                int x = point[0] + dir[0];
-                int y = point[1] + dir[1];
-                while(!(x < 0 || y < 0 || x >= m || y >= n || grid[x][y] == 'G' || grid[x][y] == 'W'))
-                {
-                    if(grid[x][y] != 'P')
-                        count--;
-                    grid[x][y] = 'P';
-                    x += dir[0];
-                    y += dir[1];
+    public int countUnguarded(int m, int n, int[][] guards, int[][] walls){ 
+        int[][] grid = new int[m][n];
+        for (int[] g : guards){
+            grid[g[0]][g[1]] = 2;
+        } 
+        for (int[] w : walls){
+            grid[w[0]][w[1]] = 2;
+        } 
+        int[] dr = {-1, 0, 1, 0};
+        int[] dc = {0, 1, 0, -1};
+        for (int[] g : guards){
+            int gr = g[0], gc = g[1];
+            for (int d = 0; d < 4; d++){
+                int r = gr + dr[d], c = gc + dc[d];
+                while (r >= 0 && r < m && c >= 0 && c < n && grid[r][c] < 2){
+                    grid[r][c] = 1; 
+                    r += dr[d];
+                    c += dc[d];
                 }
+            }
+        }
+
+        int count = 0;
+        for (int i = 0; i < m; i++){
+            for (int j = 0; j < n; j++){
+                if (grid[i][j] == 0) count++;
             }
         }
         return count;
